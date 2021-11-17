@@ -1,19 +1,23 @@
 import TOCItem from "./TOCItem";
 
 export default function TOC(props) {
-  const { allFilms } = props;
-  console.log(allFilms);
+  const { allFilms, onSelection } = props;
+
   return (
     <>
       <h1>TOC</h1>
       <div>
-        <div className="container">
-          {allFilms.map((item) => (
+        <div
+          className="btn-group-vertical"
+          role="group"
+          aria-label="Basic example">
+          {allFilms.map((item, index) => (
             <TOCItem
-              key={item.episode_id}
+              key={item.created}
+              index={index}
               title={item.title}
               episode={item.episode_id}
-              // abstract={item.opening_crawl}
+              onSelection={(index) => onSelection(index)}
             />
           ))}
         </div>

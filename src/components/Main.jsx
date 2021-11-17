@@ -5,31 +5,52 @@ import TOC from "./TOC";
 
 export default function Main() {
   const [allFilms, setAllFilms] = useState({});
-  const isMounted = useRef(false);
+  const [selectedFilm, setSelectedFilm] = useState();
+  const localFilms = JSON.parse(localStorage.getItem("localFilms"));
+  // const isMounted = useRef(false);
 
   useEffect(() => {
-    isMounted.current = true;
-    loadAllFilms();
-    console.log("allFilms: " + allFilms);
-    return () => {
-      isMounted.current = false;
+    // isMounted.current = true;
+    const loadAllFilms = async () => {
+      try {
+        const allFilms = await getAllFilms();
+        if (allFilms) {
+          setAllFilms(allFilms);
+          localStorage.setItem("localFilms", JSON.stringify(allFilms));
+        }
+      } catch (error) {
+        alert(error);
+      }
     };
-  }, []);
+    loadAllFilms();
+    // return () => {
+    //   isMounted.current = false;
+    // };
+  }, [selectedFilm]);
 
-  const loadAllFilms = async () => {
-    try {
-      const allFilms = await getAllFilms();
-      if (allFilms) setAllFilms(allFilms);
-    } catch (error) {
-      console.log(error);
-    }
+  const onSelection = (index) => {
+    setSelectedFilm({
+      title: localFilms[index].title,
+      episode: localFilms[index].episode_id,
+      abstract: localFilms[index].opening_crawl,
+    });
   };
 
   return (
     <>
       {!allFilms.length && <div>Spinner...</div>}
-      {allFilms.length && <TOC allFilms={allFilms} />}
-      <FilmDetails />
+      {allFilms.length &&
+        JSON.stringify(allFilms) == JSON.stringify(localFilms) && (
+          <TOC allFilms={allFilms} onSelection={onSelection} />
+        )}
+      {!selectedFilm && <div>Please select a film.</div>}
+      {selectedFilm && (
+        <FilmDetails
+          title={selectedFilm.title}
+          episode={selectedFilm.episode}
+          abstract={selectedFilm.abstract}
+        />
+      )}
     </>
   );
 }

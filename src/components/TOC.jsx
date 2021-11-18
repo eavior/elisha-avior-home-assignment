@@ -1,7 +1,7 @@
 import TOCItem from "./TOCItem";
 
 export default function TOC(props) {
-  const { allFilms, onSelection } = props;
+  const { allFilms, onSelectFilm } = props;
 
   return (
     <>
@@ -17,7 +17,7 @@ export default function TOC(props) {
               index={index}
               title={item.title}
               episode={item.episode_id}
-              onSelection={(index) => onSelection(index)}
+              onSelectFilm={(index) => onSelectFilm(index)}
             />
           ))}
         </div>

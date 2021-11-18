@@ -1,10 +1,10 @@
-import { useEffect, useState, useRef } from "react";
+// import { useEffect, useState, useRef } from "react";
 
 export default function TOCItem(props) {
-  const { title, episode, onSelection, index } = props;
+  const { title, episode, onSelectFilm, index } = props;
 
   const handleSelection = (index) => {
-    onSelection(index);
+    onSelectFilm(index);
   };
 
   return (

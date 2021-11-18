@@ -41,6 +41,8 @@ export default function Main() {
   };
 
   const onSelectFavorite = (episode, favorite) => {
+    console.log(episode);
+    console.log(favorite);
     const allFavorites =
       JSON.parse(localStorage.getItem("localFavorites")) || [];
     if (favorite) allFavorites.push(episode);
@@ -54,21 +56,45 @@ export default function Main() {
 
   return (
     <>
-      {!allFilms.length && <div>Spinner...</div>}
-      {allFilms.length &&
-        JSON.stringify(allFilms) === JSON.stringify(localFilms) && (
-          <TOC allFilms={allFilms} onSelectFilm={onSelectFilm} />
+      <div className="container-lg m-3">
+        {!allFilms.length && (
+          <div>
+            <div
+              className="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"></div>
+            <div>Loading...</div>
+          </div>
         )}
-      {!selectedFilm && allFilms.length && <div>Please select a film.</div>}
-      {selectedFilm && (
-        <FilmDetails
-          title={selectedFilm.title}
-          episode={selectedFilm.episode}
-          abstract={selectedFilm.abstract}
-          favoritesList={favorites}
-          onSelectFavorite={onSelectFavorite}
-        />
-      )}
+        {allFilms.length && (
+          <div
+            className="row row-cols-auto justify-content-center"
+            style={{ minHeight: "80vh" }}>
+            <div className="col col-sm-auto mb-3 d-flex align-items-sm-center">
+              <div className="col-sm-auto text-xs-end text-md-center">
+                {JSON.stringify(allFilms) === JSON.stringify(localFilms) && (
+                  <TOC allFilms={allFilms} onSelectFilm={onSelectFilm} />
+                )}
+              </div>
+              {/* <div className="col-md-auto">favorites</div> */}
+            </div>
+            <div
+              className="col text-xs-start text-md-center d-flex align-items-sm-center justify-content-center"
+              style={{ minWidth: "20em" }}>
+              {!selectedFilm && <div>Please select a film.</div>}
+              {selectedFilm && (
+                <FilmDetails
+                  title={selectedFilm.title}
+                  episode={selectedFilm.episode}
+                  abstract={selectedFilm.abstract}
+                  favoritesList={favorites}
+                  onSelectFavorite={onSelectFavorite}
+                />
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }

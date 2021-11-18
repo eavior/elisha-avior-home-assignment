@@ -5,10 +5,9 @@ export default function TOC(props) {
 
   return (
     <>
-      <h1>TOC</h1>
       <div>
         <div
-          className="btn-group-vertical"
+          className="btn-group-vertical gap-1"
           role="group"
           aria-label="Basic example">
           {allFilms.map((item, index) => (

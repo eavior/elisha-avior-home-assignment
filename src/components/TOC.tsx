@@ -8,12 +8,11 @@ export default function TOC(props: {
   const { allFilms, titleSelectedFilm, onSelectFilm } = props;
 
   return (
-    <>
-      <div>
         <div
           className="btn-group-vertical gap-1"
           role="group"
-          aria-label="Basic example">
+          aria-label="TOC"
+          data-testid="toc">
           {allFilms.map((item, index) => (
             <TOCItem
               key={item.created}
@@ -24,7 +23,5 @@ export default function TOC(props: {
             />
           ))}
         </div>
-      </div>
-    </>
   );
 }

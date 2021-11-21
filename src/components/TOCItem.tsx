@@ -19,12 +19,10 @@ export default function TOCItem(props: {
   };
 
   return (
-    <>
       <button
         className={`btn btn-primary text-start btn-block ${buttonActive}`}
         onClick={() => handleSelection(index)}>
         {title}
       </button>
-    </>
   );
 }

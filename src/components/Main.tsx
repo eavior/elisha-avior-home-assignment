@@ -25,7 +25,7 @@ export default function Main() {
       }
     };
     loadAllFilms();
-  }, []);
+  }, [allFilms]);
 
   const onSelectFilm = (index: any) => {
     setSelectedFilm({
@@ -55,7 +55,7 @@ export default function Main() {
               className="spinner-border spinner-border-sm"
               role="status"
               aria-hidden="true"></div>
-            <div>We're retrieving the up-to-date film list for you.</div>
+            <div>We're retrieving the up-to-date Star Wars movie list for you.</div>
             <div>Just a moment please...</div>
           </div>
         )}

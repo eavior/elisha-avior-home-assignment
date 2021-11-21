@@ -8,6 +8,7 @@ export default function Main() {
   const [selectedFilm, setSelectedFilm] = useState<any>({});
   const [favorites, setFavorites] = useState<any>(JSON.parse(localStorage.getItem("localFavorites") || '[]'));
   const localFilms = JSON.parse(localStorage.getItem("localFilms") || '[]');
+  const [rerender, setRerender] = useState<boolean>(false);
 
   useEffect(() => {
     const loadAllFilms = async () => {
@@ -19,13 +20,14 @@ export default function Main() {
             "localFilms",
             JSON.stringify(allFilmsFromAPI)
           );
+          setRerender(previous => !previous);
         }
       } catch (error) {
         alert(error);
       }
     };
     loadAllFilms();
-  }, [allFilms]);
+  }, []);
 
   const onSelectFilm = (index: any) => {
     setSelectedFilm({
@@ -49,7 +51,7 @@ export default function Main() {
   return (
     <>
       <div className="container-lg m-3">
-        {!allFilms.length && (
+        {!localFilms.length && (
           <div>
             <div
               className="spinner-border spinner-border-sm"
@@ -59,7 +61,7 @@ export default function Main() {
             <div>Just a moment please...</div>
           </div>
         )}
-        {allFilms.length !== 0 && (
+        {localFilms.length !== 0 && (
           <div
             className="row row-cols-auto justify-content-center"
             style={{ minHeight: "80vh" }}>
@@ -67,7 +69,7 @@ export default function Main() {
               <div className="col-sm-auto text-xs-end text-md-center">
                 {JSON.stringify(allFilms) === JSON.stringify(localFilms) && (
                   <TOC
-                    allFilms={allFilms}
+                    allFilms={localFilms}
                     titleSelectedFilm={selectedFilm.title || "none"}
                     onSelectFilm={onSelectFilm}
                   />

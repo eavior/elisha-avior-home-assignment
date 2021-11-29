@@ -7,8 +7,6 @@ export default function Main() {
   const [allFilms, setAllFilms] = useState<any[]>([]);
   const [selectedFilm, setSelectedFilm] = useState<any>({});
   const [favorites, setFavorites] = useState<any>(JSON.parse(localStorage.getItem("localFavorites") || '[]'));
-  const localFilms = JSON.parse(localStorage.getItem("localFilms") || '[]');
-  const [rerender, setRerender] = useState<boolean>(false);
 
   useEffect(() => {
     const loadAllFilms = async () => {
@@ -16,24 +14,22 @@ export default function Main() {
         const allFilmsFromAPI = await getAllFilms();
         if (allFilmsFromAPI) {
           setAllFilms(allFilmsFromAPI);
-          localStorage.setItem(
-            "localFilms",
-            JSON.stringify(allFilmsFromAPI)
-          );
-          setRerender(previous => !previous);
         }
       } catch (error) {
         alert(error);
       }
     };
     loadAllFilms();
+    console.log('useEffect');
   }, []);
+
+  console.log('render');
 
   const onSelectFilm = (index: any) => {
     setSelectedFilm({
-      title: localFilms[index].title,
-      episode: localFilms[index].episode_id,
-      abstract: localFilms[index].opening_crawl,
+      title: allFilms[index].title,
+      episode: allFilms[index].episode_id,
+      abstract: allFilms[index].opening_crawl,
     });
   };
 
@@ -51,7 +47,7 @@ export default function Main() {
   return (
     <>
       <div className="container-lg m-3">
-        {!localFilms.length && (
+        {!allFilms.length && (
           <div>
             <div
               className="spinner-border spinner-border-sm"
@@ -61,19 +57,17 @@ export default function Main() {
             <div>Just a moment please...</div>
           </div>
         )}
-        {localFilms.length !== 0 && (
+        {allFilms.length !== 0 && (
           <div
             className="row row-cols-auto justify-content-center"
             style={{ minHeight: "80vh" }}>
             <div className="col col-sm-auto mb-3 d-flex align-items-sm-center">
               <div className="col-sm-auto text-xs-end text-md-center">
-                {JSON.stringify(allFilms) === JSON.stringify(localFilms) && (
                   <TOC
-                    allFilms={localFilms}
+                    allFilms={allFilms}
                     titleSelectedFilm={selectedFilm.title || "none"}
                     onSelectFilm={onSelectFilm}
                   />
-                )}
               </div>
 
             </div>
